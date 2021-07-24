@@ -76,7 +76,8 @@ python и pip.
 
 Даем права на каталоги
 
-    chmod -R 777 /mnt/nfs /mnt/nfs/pv001 /mnt/nfs/pv002
+    chmod -R 777 /mnt/nfs
+    chown -R kube /mnt/nfs
 
 Правим файл экспорта
 
