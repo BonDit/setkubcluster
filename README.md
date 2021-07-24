@@ -34,7 +34,7 @@
 
     ansible-playbook prepare-hosts.yaml
 
-## Kubespray
+## 01 - Kubespray
 
     cd ~/
     git clone https://github.com/kubernetes-sigs/kubespray.git
