@@ -101,8 +101,12 @@ View вступает в силу
     systemctl restart rpcbind && systemctl enable rpcbind
     systemctl restart nfs && systemctl enable nfs
 
-Запускаем nfs на всех остальных нодах
+Запускаем nfs на нодах
 
+    ssh kube-node-1.home
+    systemctl start nfs && systemctl enable nfs
+
+    ssh kube-node-2.home
     systemctl start nfs && systemctl enable nfs
 
 # 03 - Запускаем statefulset wordpress c базой mysql
@@ -118,7 +122,7 @@ View вступает в силу
 
 Не забываем изменить ***server: 192.168.1.80*** в деплойментах на ip своей мастер ноды или на тот ip где вы подняли nfs сервер
 
-vim kustomization.yaml
+vim kustomization.yaml [тут](site/kustomization.yaml)
 
     secretGenerator:
     - name: mysql-pass
@@ -128,7 +132,7 @@ vim kustomization.yaml
       - mysql-deployment.yaml
       - wordpress-deployment.yaml
 
-vim mysql-deployment.yaml
+vim mysql-deployment.yaml [тут](site/mysql-deployment.yaml)
 
     apiVersion: v1
     kind: Service
@@ -215,7 +219,7 @@ vim mysql-deployment.yaml
             persistentVolumeClaim:
               claimName: nfs-pvc001
 
-vim wordpress-deployment.yaml
+vim wordpress-deployment.yaml [тут](site/wordpress-deployment.yaml)
 
     apiVersion: v1
     kind: Service
