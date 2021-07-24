@@ -35,7 +35,7 @@
     cp sample cluster
     cd cluster
 
-Параметры смотрим [тут](01-kubespray/README.md).
+Параметры смотрим [тут](kubespray/README.md).
 
 Переходим в корень kubespray и запускаем установку кластера. Для этого в системе должны быть установлены интерпретатор 
 python и pip.
