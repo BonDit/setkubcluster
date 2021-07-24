@@ -47,6 +47,7 @@
 Переходим в корень kubespray и запускаем установку кластера. Для этого в системе должны быть установлены интерпретатор 
 python и pip.
 
+    cd ~/kubespray
     pip install -r requirements.txt
     ansible-playbook -i inventory/cluster/inventory.ini cluster.yml
 
@@ -114,6 +115,7 @@ View вступает в силу
 Делаем все так же с мастер ноды, зайдем в $HOME, создадим папку
 из которой будем деплоить wordpress, и зайдем в нее
 
+    ssh kube-master-1.home
     cd ~/
     mkdir site
     cd site
