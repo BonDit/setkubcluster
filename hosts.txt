@@ -1,0 +1,16 @@
+[k8s_1st_master]
+kube-master-1.home ansible_host=192.168.1.80
+
+[k8s_other_masters]
+
+[k8s_controls:children]
+k8s_1st_master
+k8s_other_masters
+
+[k8s_workers]
+kube-node-1  ansible_host=192.168.1.85
+kube-node-2  ansible_host=192.168.1.86
+
+[k8s_cluster:children]
+k8s_controls
+k8s_workers
