@@ -16,6 +16,7 @@
 
 Скачиваем плейбук для подготовки кластера
 
+    cd ~/
     git clone https://github.com/BonDit/setkubcluster.git
 
 Переходим в директорию setkubcluster и правим инвентори под себя
@@ -35,6 +36,7 @@
 
 ## Kubespray
 
+    cd ~/
     git clone https://github.com/kubernetes-sigs/kubespray.git
     cd kubespray/inventory
     cp sample cluster
