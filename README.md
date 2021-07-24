@@ -112,12 +112,12 @@ View вступает в силу
 
 # 03 - Запускаем statefulset wordpress c базой mysql
 
-Делаем все так же с мастер ноды, зайдем в $HOME, создадим папку
+Делаем все так же с мастер ноды, зайдем в $HOME, скопируем папку с нашего сервера
 из которой будем деплоить wordpress, и зайдем в нее
 
     ssh kube-master-1.home
     cd ~/
-    mkdir site
+    scp -r bondit@gw.home:/home/bondit/setkubcluster/site .
     cd site
 
 Создадим деплойменты для wordpress и mysql и секрет с паролем от базы
@@ -140,3 +140,4 @@ vim wordpress-deployment.yaml [тут](site/wordpress-deployment.yaml)
     kubectl get pv
     kubectl get pvc
     kubectl get pods
+    kubectl get svc
