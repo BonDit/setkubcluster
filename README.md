@@ -137,6 +137,8 @@ vim wordpress-deployment.yaml [тут](site/wordpress-deployment.yaml)
     kubectl get pvc
     kubectl get pods
     kubectl get svc
+    kubectl get pods -o wide
+    kubectl get pods --all-namespaces
 
 Удаляем весь деплой
 
