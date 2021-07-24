@@ -116,7 +116,7 @@ View вступает в силу
 
 Создадщим деплойменты для wordpress и mysql и секрет с паролем от базы
 
-Не забываем изменить server: 192.168.1.80 в деплойментых на ip своей мастер ноды или на тот ip где вы подняли nfs сервер
+Не забываем изменить ***server: 192.168.1.80*** в деплойментых на ip своей мастер ноды или на тот ip где вы подняли nfs сервер
 
 vim kustomization.yaml
 
@@ -303,3 +303,14 @@ vim wordpress-deployment.yaml
           - name: nfs-pv002
             persistentVolumeClaim:
               claimName: nfs-pvc002
+
+Ну и запускаем
+
+    kubectl apply -k ./
+
+Проверяем все
+
+    kubectl get secrets
+    kubectl get pv
+    kubectl get pvc
+    kubectl get pods
