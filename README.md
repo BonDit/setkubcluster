@@ -62,11 +62,6 @@ python и pip.
 
     crictl pods
 
-Установите в bash автодополнение для команд kubectl:
-
-    source <(kubectl completion bash)
-    echo "source <(kubectl completion bash)" >> ~/.bashrc
-
 ## 02 - Настройка NFS сервера для Persistent Volumes
 
 Заходим на мастер ноду
