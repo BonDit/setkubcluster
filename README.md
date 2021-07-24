@@ -14,9 +14,14 @@
     ssh-copy-id kube-node-1.home
     ssh-copy-id kube-node-2.home
 
-Переходим в директорию setkubcluster.
+Скачиваем плейбук для подготовки кластера
+
+    git clone https://github.com/BonDit/setkubcluster.git
+
+Переходим в директорию setkubcluster и правим инвентори под себя
 
     cd setkubcluster
+    vim hosts.txt
 
 Проверяем подключение ansible к хостам:
 
