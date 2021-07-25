@@ -70,7 +70,6 @@ python и pip.
 
 Создаем каталоги nfs
 
-    mkdir -p /mnt/nfs
     mkdir -p /mnt/nfs/pv001
     mkdir -p /mnt/nfs/pv002
 
@@ -82,9 +81,9 @@ python и pip.
 Правим файл экспорта
 
     vim /etc/exports
-    /mnt/nfs *(rw,no_root_squash)
-    /mnt/nfs/pv001 *(rw,no_root_squash)
-    /mnt/nfs/pv002 *(rw,no_root_squash)
+    /mnt/nfs *(rw,sync,no_root_squash)
+    /mnt/nfs/pv001 *(rw,sync,no_root_squash)
+    /mnt/nfs/pv002 *(rw,sync,no_root_squash)
 
 Применяем конфигурацию
 
@@ -113,7 +112,6 @@ View вступает в силу
 из которой будем деплоить wordpress, и зайдем в нее
 
     ssh kube-master-1.home
-    cd ~/
     scp -r bondit@gw.home:/home/bondit/setkubcluster/site .
     cd site
 
