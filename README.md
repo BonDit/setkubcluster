@@ -138,6 +138,10 @@ vim wordpress-deployment.yaml [тут](site/wordpress-deployment.yaml)
     kubectl get svc
     kubectl get pods -o wide
     kubectl get pods --all-namespaces
+    kubectl get pod -A
+    kubectl describe node kube-master-1.home
+    kubectl describe node kube-node-1.home
+    kubectl describe node kube-node-2.home
 
 Удаляем весь деплой
 
