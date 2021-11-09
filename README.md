@@ -39,7 +39,7 @@
     cd ~/
     git clone https://github.com/kubernetes-sigs/kubespray.git
     cd kubespray/inventory
-    cp sample cluster
+    cp -r sample cluster
     cd cluster
     cp -f ../../../setkubcluster/kubespray/cluster/inventory.ini .
 
