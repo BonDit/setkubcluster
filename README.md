@@ -55,6 +55,7 @@ python и pip.
 После установки на ноде master-1 можно посмотреть состояние кластера.
 
     kubectl get nodes -o wide
+    kubectl get pods --all-namespaces
 
 Для просмотра контейнеров на ноде, вместо docker следует использовать crictl
 
