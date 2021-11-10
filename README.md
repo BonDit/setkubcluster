@@ -78,6 +78,7 @@ python и pip.
 
     chmod -R 777 /mnt/nfs
     chown -R nobody:nogroup /mnt/nfs
+    Для centos7 chown -R nfsnobody:nfsnobody /mnt/nfs
 
 Правим файл экспорта
 
