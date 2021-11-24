@@ -17,7 +17,7 @@
       - vim
       - git
       - bash-completion
-      - nfs-utils
+      - nfs-common
       - qemu-guest-agent
     state: latest
 
