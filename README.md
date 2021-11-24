@@ -4,6 +4,11 @@
 
 ## 00 - подготовительные действия
 
+Ставим ansible
+
+    apt install python-pip python-setuptools -y
+    python -m pip install ansible
+
 Сгенерировать, если его ещё нет, ssh ключ:
 
     ssh-keygen
