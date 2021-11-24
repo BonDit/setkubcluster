@@ -39,7 +39,7 @@
     cd ~/
     git clone https://github.com/kubernetes-sigs/kubespray.git
     cd kubespray/inventory
-    cp sample cluster
+    cp -r sample cluster
     cd cluster
     cp -f ../../../setkubcluster/kubespray/cluster/inventory.ini .
 
@@ -55,6 +55,7 @@ python и pip.
 После установки на ноде master-1 можно посмотреть состояние кластера.
 
     kubectl get nodes -o wide
+    kubectl get pods --all-namespaces
 
 Для просмотра контейнеров на ноде, вместо docker следует использовать crictl
 
@@ -76,7 +77,8 @@ python и pip.
 Даем права на каталоги
 
     chmod -R 777 /mnt/nfs
-    chown -R kube /mnt/nfs
+    chown -R nobody:nogroup /mnt/nfs
+    Для centos7 chown -R nfsnobody:nfsnobody /mnt/nfs
 
 Правим файл экспорта
 
