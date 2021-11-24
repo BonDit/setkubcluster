@@ -42,6 +42,7 @@
     cp -r sample cluster
     cd cluster
     cp -f ../../../setkubcluster/kubespray/cluster/inventory.ini .
+    vim inventory.ini
 
 Параметры смотрим [тут](kubespray/README.md).
 
