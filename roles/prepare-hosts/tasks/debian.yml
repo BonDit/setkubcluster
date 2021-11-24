@@ -1,0 +1,38 @@
+# 4 steps:
+# - yum update -y
+# - disable swap
+# - disable selinux
+# - disable firewall
+
+---
+- name: Upgrade all packages
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Install packages
+  apt:
+    name:
+      - net-tools
+      - vim
+      - git
+      - bash-completion
+      - nfs-utils
+      - qemu-guest-agent
+    state: latest
+
+- name: Check is swap enable
+  shell: swapon
+  register: swap_present
+  changed_when: false
+  ignore_errors: true
+
+- name: If swap is enabled - disable it
+  shell: swapoff -a
+  when: swap_present.stdout != ""
+
+- name: Disable SWAP in fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*\s*swap\s*.*)$'
+    replace: '# \1'
