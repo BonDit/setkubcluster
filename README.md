@@ -95,7 +95,7 @@ python и pip.
 
     exportfs -ra
 
-Запускаем сервис nfs
+Запускаем сервис nfs на управляющем сервере
 
     для Centos:
     systemctl restart rpcbind && systemctl enable rpcbind
@@ -104,17 +104,6 @@ python и pip.
     apt install -y nfs-kernel-server
     systemctl enable nfs-kernel-server.service
     systemctl start nfs-kernel-server.service
-
-Запускаем nfs на нодах для Centos
-
-    ssh kube-1.home
-    systemctl start nfs && systemctl enable nfs
- 
-    ssh kube-2.home
-    systemctl start nfs && systemctl enable nfs
-
-    ssh kube-3.home
-    systemctl start nfs && systemctl enable nfs
     
 Монтируем nfs папку так же на всех нодах
 
