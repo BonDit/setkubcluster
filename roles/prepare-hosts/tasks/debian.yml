@@ -36,3 +36,14 @@
     path: /etc/fstab
     regexp: '^([^#].*\s*swap\s*.*)$'
     replace: '# \1'
+    
+- name: Restart server
+  command: sleep 10 && /sbin/shutdown -r now
+  async: 0
+  poll: 0
+  ignore_errors: true
+
+- name: Wait for system to become reachable again
+  wait_for_connection:
+    delay: 60
+    timeout: 300
