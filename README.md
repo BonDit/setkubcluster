@@ -4,6 +4,8 @@
 
 ## 00 - подготовительные действия
 
+Все действия производятся с упраляющего сервера gw.home(192.168.1.10)
+
 Ставим ansible
 
     apt install python-pip python-setuptools -y
@@ -15,9 +17,9 @@
 
 Установить ssh ключ на машины кластера.
 
-    ssh-copy-id kube-master-1.home
-    ssh-copy-id kube-node-1.home
-    ssh-copy-id kube-node-2.home
+    ssh-copy-id kube-1
+    ssh-copy-id kube-2
+    ssh-copy-id kube-3
 
 Скачиваем плейбук для подготовки кластера
 
@@ -58,7 +60,7 @@ python и pip.
     pip install -r requirements.txt
     ansible-playbook -i inventory/cluster/inventory.ini cluster.yml
 
-После установки на ноде master-1 можно посмотреть состояние кластера.
+После установки на ноде kube-1 можно посмотреть состояние кластера.
 
     kubectl get nodes -o wide
     kubectl get pods --all-namespaces
@@ -71,50 +73,66 @@ python и pip.
 
 ## 02 - Настройка NFS сервера для Persistent Volumes
 
-Заходим на мастер ноду
+Заходим на управляющий сервер
 
-    ssh kube-master-1.home
+    ssh gw.home
 
-Создаем каталоги nfs
+Создаем каталог nfs
 
-    mkdir -p /mnt/nfs/pv001
-    mkdir -p /mnt/nfs/pv002
+    mkdir -p /mnt/nfs
 
-Даем права на каталоги
+Даем права на каталог
 
     chmod -R 777 /mnt/nfs
-    chown -R nobody:nogroup /mnt/nfs
-    Для centos7 chown -R nfsnobody:nfsnobody /mnt/nfs
+    Для Debian chown -R nobody:nogroup /mnt/nfs
+    Для Centos chown -R nfsnobody:nfsnobody /mnt/nfs
 
 Правим файл экспорта
 
-    vim /etc/exports
-    /mnt/nfs *(rw,sync,no_root_squash)
-    /mnt/nfs/pv001 *(rw,sync,no_root_squash)
-    /mnt/nfs/pv002 *(rw,sync,no_root_squash)
+    echo '/mnt/nfs *(rw,sync,no_root_squash)' >> /etc/exports
 
 Применяем конфигурацию
 
-    exportfs -r
+    exportfs -ra
 
-View вступает в силу
+Запускаем сервис nfs
 
-    exportfs
-
-Запускаем rpcbind, сервис nfs
-
+    для Centos:
     systemctl restart rpcbind && systemctl enable rpcbind
     systemctl restart nfs && systemctl enable nfs
+    для Debian:
+    apt install -y nfs-kernel-server
+    systemctl enable nfs-kernel-server.service
+    systemctl start nfs-kernel-server.service
 
-Запускаем nfs на нодах
+Запускаем nfs на нодах для Centos
 
-    ssh kube-node-1.home
+    ssh kube-1
+    systemctl start nfs && systemctl enable nfs
+ 
+    ssh kube-2
     systemctl start nfs && systemctl enable nfs
 
-    ssh kube-node-2.home
+    ssh kube-3
     systemctl start nfs && systemctl enable nfs
+    
+Монтируем nfs папку так же на всех нодах
 
-# 03 - Запускаем statefulset wordpress c базой mysql
+    mkdir -p /mnt/nfs
+    mount -t nfs 192.168.1.10:/mnt/nfs /mnt/nfs
+    echo '192.168.1.10:/mnt/nfs /mnt/nfs nfs user,rw,auto 0 0' >> /etc/fstab
+
+# 03 - Ставим helm и nfs-provisioner
+
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+
+    helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+    helm repo update
+    helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=192.168.1.10 --set nfs.path=/mnt/nfs
+
+# 04 - Запускаем statefulset wordpress c базой mysql
 
 Делаем все так же с мастер ноды, зайдем в $HOME, скопируем папку с нашего сервера
 из которой будем деплоить wordpress, и зайдем в нее
