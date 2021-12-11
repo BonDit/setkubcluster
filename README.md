@@ -64,6 +64,10 @@ python и pip.
 
     kubectl get nodes -o wide
     kubectl get pods --all-namespaces
+    
+Так же можно скопировать конфиг(он же context) (cat .kube/config) и перенести на gw.home(192.168.1.10) по тому же пути,
+не забыв заменить server: https://127.0.0.1:6443 на ip мастер ноды(192.168.1.80). И мы сможем
+упроавлять кластером с gw.home(192.168.1.10)
 
 Для просмотра контейнеров на ноде, вместо docker следует использовать crictl
 
