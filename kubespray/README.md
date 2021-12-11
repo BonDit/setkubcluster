@@ -17,6 +17,7 @@
 * **kube_network_node_prefix**: 24 - размер подсети подов на ноде кластера.
 * **kube_apiserver_port**: 6443 - Порт API сервера кластера.
 * **kube_proxy_mode**: ipvs - режим iptables не ставим.
+* **kube_proxy_strict_arp**: true - нужен для работы MetallB(который нужен для ingress LoadBalancer)
 * **cluster_name**: cluster.local - имя кластера. Используется в качестве корневого домена во внутреннем DNS сервере.
 * **enable_nodelocaldns**: true - включаем кеширующие DNS сервера на каждой ноде кластера.
 * **nodelocaldns_ip**: 169.254.25.10 - IP адрес кешируюшего DNS сервера на ноде.
