@@ -15,34 +15,34 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-pv001
+  name: nfs
   labels:
-    pv: nfs-pv001
+    pv: nfs
 spec:
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Recycle
-  storageClassName: nfs
+  storageClassName: nfs-client
   nfs:
-    path: /mnt/nfs/pv001
-    server: 192.168.1.80
+    path: /mnt/nfs
+    server: 192.168.1.10
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-pvc001
+  name: nfs
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-  storageClassName: nfs
+  storageClassName: nfs-client
   selector:
     matchLabels:
-      pv: nfs-pv001
+      pv: nfs
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -76,9 +76,9 @@ spec:
         - containerPort: 3306
           name: mysql
         volumeMounts:
-        - name: nfs-pv001
+        - name: nfs
           mountPath: /var/lib/mysql
       volumes:
-      - name: nfs-pv001
+      - name: nfs
         persistentVolumeClaim:
-          claimName: nfs-pvc001
+          claimName: nfs
