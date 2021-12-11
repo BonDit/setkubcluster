@@ -17,9 +17,9 @@
 
 Установить ssh ключ на машины кластера.
 
-    ssh-copy-id kube-1
-    ssh-copy-id kube-2
-    ssh-copy-id kube-3
+    ssh-copy-id kube-1.home
+    ssh-copy-id kube-2.home
+    ssh-copy-id kube-3.home
 
 Скачиваем плейбук для подготовки кластера
 
@@ -107,13 +107,13 @@ python и pip.
 
 Запускаем nfs на нодах для Centos
 
-    ssh kube-1
+    ssh kube-1.home
     systemctl start nfs && systemctl enable nfs
  
-    ssh kube-2
+    ssh kube-2.home
     systemctl start nfs && systemctl enable nfs
 
-    ssh kube-3
+    ssh kube-3.home
     systemctl start nfs && systemctl enable nfs
     
 Монтируем nfs папку так же на всех нодах
@@ -122,8 +122,11 @@ python и pip.
     mount -t nfs 192.168.1.10:/mnt/nfs /mnt/nfs
     echo '192.168.1.10:/mnt/nfs /mnt/nfs nfs user,rw,auto 0 0' >> /etc/fstab
 
-# 03 - Ставим helm и nfs-provisioner
+# 03 - Ставим helm и nfs-provisioner через helm
 
+Делаем все так же с мастер ноды
+
+    ssh kube-1.home
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     chmod 700 get_helm.sh
     ./get_helm.sh
@@ -132,18 +135,32 @@ python и pip.
     helm repo update
     helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=192.168.1.10 --set nfs.path=/mnt/nfs
 
-# 04 - Запускаем statefulset wordpress c базой mysql
+# 04 - Запускаем statefulset wordpress c базой mysql через helm
+
+Делаем все так же с мастер ноды
+
+    ssh kube-1.home
+    helm repo add wordpress-bitnami https://charts.bitnami.com/bitnami
+    helm repo update
+    helm search repo wordpress | grep bitnami/wordpress
+    helm install wordpress wordpress-bitnami/wordpress \
+        --set global.storageClass=nfs-client \
+        --set wordpressUsername=admin \
+        --set wordpressPassword=password \
+        --set mariadb.auth.rootPassword=secretpassword
+
+# 05 - Запускаем statefulset wordpress c базой mysql через deployment
 
 Делаем все так же с мастер ноды, зайдем в $HOME, скопируем папку с нашего сервера
 из которой будем деплоить wordpress, и зайдем в нее
 
-    ssh kube-master-1.home
-    scp -r bondit@gw.home:/home/bondit/setkubcluster/site .
+    ssh kube-1.home
+    scp -r root@gw.home:/home/bondit/setkubcluster/site .
     cd site
 
 Скопировали деплойменты для wordpress и mysql и секрет с паролем от базы
 
-Не забываем изменить ***server: 192.168.1.80*** в деплойментах на ip своей мастер ноды или на тот ip где вы подняли nfs сервер
+Не забываем изменить ***server: 192.168.1.10*** в деплойментах на тот ip где вы подняли nfs сервер
 
 vim kustomization.yaml [тут](site/kustomization.yaml)
 
@@ -165,9 +182,9 @@ vim wordpress-deployment.yaml [тут](site/wordpress-deployment.yaml)
     kubectl get pods -o wide
     kubectl get pods --all-namespaces
     kubectl get pod -A
-    kubectl describe node kube-master-1.home
-    kubectl describe node kube-node-1.home
-    kubectl describe node kube-node-2.home
+    kubectl describe node kube-1.home
+    kubectl describe node kube-2.home
+    kubectl describe node kube-3.home
 
 Удаляем весь деплой
 
