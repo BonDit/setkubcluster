@@ -65,3 +65,9 @@
 - name: Disable SELinux
   shell: setenforce 0
   when: selinux_ret.reboot_required
+
+- name: Restart server
+  command: /sbin/shutdown -r +1
+  async: 0
+  poll: 0
+  ignore_errors: true
