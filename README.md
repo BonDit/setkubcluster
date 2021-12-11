@@ -8,8 +8,13 @@
 
 Ставим ansible
 
+    Для Debian
     apt install python-pip python-setuptools -y
     python -m pip install ansible
+    Для Centos
+    yum install python3-pip python3-setuptools -y
+    pip3 install --upgrade pip
+    pip3 install ansible
 
 Сгенерировать, если его ещё нет, ssh ключ:
 
