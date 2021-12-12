@@ -38,7 +38,7 @@
     replace: '# \1'
     
 - name: Restart server
-  command: sleep 10 && /sbin/shutdown -r now
+  command: /sbin/shutdown -r now
   async: 0
   poll: 0
   ignore_errors: true
