@@ -37,9 +37,9 @@
     regexp: '^([^#].*\s*swap\s*.*)$'
     replace: '# \1'
     
-- name: Restart server
+- name: Restart servers
   command: /sbin/shutdown -r now
-  async: 0
+  async: 30
   poll: 0
   ignore_errors: true
 
