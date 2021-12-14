@@ -23,7 +23,7 @@
   
 ## group_vars/k8s_cluster/k8s-net-calico.yml
 
-* **calico_ipip_mode**: 'Always' - Определяем когда использовать IP in IP режим.
+* **calico_ipip_mode**: 'Never' - Определяем когда использовать IP in IP режим.
 
 ## group_vars/all/all.yml
 
