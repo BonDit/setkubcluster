@@ -119,6 +119,7 @@ python и pip.
     
 Монтируем nfs папку так же на всех нодах
 
+    Для дебиан ставим клиент apt install -y nfs-common
     mkdir -p /mnt/nfs
     mount -t nfs 192.168.1.10:/mnt/nfs /mnt/nfs
     echo '192.168.1.10:/mnt/nfs /mnt/nfs nfs user,rw,auto 0 0' >> /etc/fstab
