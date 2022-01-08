@@ -28,6 +28,8 @@
 
 ## group_vars/k8s_cluster/addons.yml
 
+Раскоментираем все что связано с ingress
+
 * **ingress_nginx_enabled**: true
 * **ingress_nginx_host_network**: false
 * **ingress_publish_status_address**: ""
@@ -57,4 +59,9 @@
 * **ingress_nginx_termination_grace_period_seconds**: 300
 * **ingress_nginx_class**: nginx
 
+Включим metallb чтобы он смог выдать ip ингрессу
 
+* **metallb_enabled**: true
+* **metallb_speaker_enabled**: true
+* **metallb_ip_range**:
+  - "192.168.1.90/32"
