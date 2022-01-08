@@ -1,8 +1,0 @@
----
-  - name: os family debian
-    include_tasks: debian.yml
-    when: ansible_facts['os_family'] == 'Debian'
-  
-  - name: os family redhat
-    include_tasks: redhat.yml
-    when: ansible_facts['os_family'] == 'RedHat'
