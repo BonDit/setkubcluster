@@ -18,6 +18,7 @@
 * **enable_nodelocaldns**: true - включаем кеширующие DNS сервера на каждой ноде кластера.
 * **container_manager**: _containerd_ - определяем систему контейнеризации.
 * **k8s_image_pull_policy**: IfNotPresent - политика загрузки образов системных контейнеров кластера.
+* **kubeconfig_localhost**: true - : создаст контекст для управления кластером в inventory/mycluster/artifacts/admin.conf
 * **auto_renew_certificates**: true - Автоматический перевыпуск сертификатов для кубернетес control plane. 
   Без необходимости увеличения версии кластера.
   
