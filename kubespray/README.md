@@ -22,13 +22,6 @@
 * **auto_renew_certificates**: true - Автоматический перевыпуск сертификатов для кубернетес control plane. 
   Без необходимости увеличения версии кластера.
   
-## group_vars/k8s_cluster/k8s-net-calico.yml
 
-* **calico_ipip_mode**: 'Never' - Определяем когда использовать IP in IP режим.
-
-## group_vars/all/all.yml
-
-* **etcd_kubeadm_enabled**: true - разрешаем установку и etcd средствами kubeadm.
-* **loadbalancer_apiserver_type**: nginx - значение по умолчанию. Доступ к k8s API через loopback интерфейс ноды кластера.
 
 
