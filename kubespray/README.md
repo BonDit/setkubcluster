@@ -1,13 +1,5 @@
 # Параметры кластера в файлах kubespray
 
-Перейдите в директорию inventory.
-
-Скопируйте пример конфигурации кластера sample в cluster.
-
-Перейдите в директорию cluster и отредактируйте файл inventory.ini. [Пример файла](cluster/inventory.ini).
-
-Остальные параметры будем изменять в файлах в директории group_vars.
-
 ## group_vars/k8s_cluster/k8s-cluster.yml
 
 * **kube_version**: v1.22.5 - выбираем версию кластера кубернетес.
