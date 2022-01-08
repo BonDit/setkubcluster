@@ -22,39 +22,19 @@
 
 Установить ssh ключ на машины кластера.
 
-    ssh-copy-id kube-1.home
-    ssh-copy-id kube-2.home
-    ssh-copy-id kube-3.home
-
-Скачиваем плейбук для подготовки кластера
-
-    cd ~/
-    git clone https://github.com/BonDit/setkubcluster.git
-
-Переходим в директорию setkubcluster и правим инвентори под себя
-
-    cd setkubcluster
-    vim hosts.txt
-
-Проверяем подключение ansible к хостам:
-
-    ansible-playbook ping.yaml
-
-Если ping не проходит, ищем ошибки и исправляем.
-
-Приводим настройки серверов кластера к одному виду:
-
-    ansible-playbook prepare-hosts.yaml
+    ssh-copy-id 192.168.1.80
+    ssh-copy-id 192.168.1.85
+    ssh-copy-id 192.168.1.86
 
 ## 01 - Kubespray
 
     cd ~/
     git clone https://github.com/kubernetes-sigs/kubespray.git
-    cd kubespray/inventory
-    cp -r sample cluster
-    cd cluster
-    cp -f ../../../setkubcluster/kubespray/cluster/inventory.ini .
-    vim inventory.ini
+    cd kubespray
+    git checkout tags/v2.18.0
+    cp -rfp inventory/sample inventory/cluster
+    declare -a IPS=(192.168.1.80 192.168.1.85 192.168.1.82 192.168.1.86)
+    CONFIG_FILE=inventory/cluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 
 Параметры смотрим [тут](kubespray/README.md).
 
@@ -63,19 +43,19 @@ python и pip.
 
     cd ~/kubespray
     pip install -r requirements.txt или pip3 install -r requirements.txt
-    ansible-playbook -i inventory/cluster/inventory.ini cluster.yml
+    ansible-playbook -i inventory/cluster/hosts.yaml --become --become-user=root cluster.yml
     
 Затем скопируем context для управления кластером 
     cp -f inventory/mycluster/artifacts/admin.conf /root/.kube/config
 
-После установки на ноде kube-1 можно посмотреть состояние кластера.
-
-    kubectl get nodes -o wide
-    kubectl get pods --all-namespaces
-    
 Так же можно скопировать конфиг(он же context) (cat .kube/config) и перенести на gw.home(192.168.1.10) по тому же пути,
 не забыв заменить server: https://127.0.0.1:6443 на ip мастер ноды(192.168.1.80). И мы сможем
 упроавлять кластером с gw.home(192.168.1.10)
+
+После установки можно посмотреть состояние кластера.
+
+    kubectl get nodes -o wide
+    kubectl get pods --all-namespaces
 
 Для просмотра контейнеров на ноде, вместо docker следует использовать crictl
 
@@ -87,7 +67,7 @@ python и pip.
 
 Заходим на управляющий сервер
 
-    ssh gw.home
+    ssh 192.168.1.80
 
 Создаем каталог nfs
 
@@ -126,7 +106,7 @@ python и pip.
 
 # 03 - Ставим helm и nfs-provisioner через helm
 
-Делаем все так же с мастер ноды
+Делаем все так же с мастер ноды или с управляющего сервера тут как удобнее
 
     ssh kube-1.home
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -153,7 +133,7 @@ python и pip.
 
 # 05 - Запускаем statefulset wordpress c базой mysql через deployment
 
-Делаем все так же с мастер ноды, зайдем в $HOME, скопируем папку с нашего сервера
+Делаем все так же с мастер ноды или с управляющего сервера тут как удобнее, зайдем в $HOME, скопируем папку с нашего сервера
 из которой будем деплоить wordpress, и зайдем в нее
 
     ssh kube-1.home
