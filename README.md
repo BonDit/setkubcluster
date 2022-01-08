@@ -64,6 +64,9 @@ python и pip.
     cd ~/kubespray
     pip install -r requirements.txt или pip3 install -r requirements.txt
     ansible-playbook -i inventory/cluster/inventory.ini cluster.yml
+    
+Затем скопируем context для управления кластером 
+    cp -f inventory/mycluster/artifacts/admin.conf /root/.kube/config
 
 После установки на ноде kube-1 можно посмотреть состояние кластера.
 
