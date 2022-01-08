@@ -46,6 +46,7 @@ python и pip.
     ansible-playbook -i inventory/cluster/hosts.yaml --become --become-user=root cluster.yml
     
 Затем скопируем context для управления кластером 
+
     cp -f inventory/mycluster/artifacts/admin.conf /root/.kube/config
 
 Так же можно скопировать конфиг(он же context) (cat .kube/config) и перенести на gw.home(192.168.1.10) по тому же пути,
