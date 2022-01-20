@@ -118,7 +118,7 @@ python и pip.
     helm repo update
     helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=192.168.1.10 --set nfs.path=/mnt/nfs
 
-# 04 - Запускаем statefulset wordpress c базой mysql через helm
+# 04 - Запускаем wordpress c базой mysql через helm
 
 Делаем все так же с мастер ноды
 
@@ -131,44 +131,3 @@ python и pip.
         --set wordpressUsername=admin \
         --set wordpressPassword=password \
         --set mariadb.auth.rootPassword=secretpassword
-
-# 05 - Запускаем statefulset wordpress c базой mysql через deployment
-
-Делаем все так же с мастер ноды или с управляющего сервера тут как удобнее, зайдем в $HOME, скопируем папку с нашего сервера
-из которой будем деплоить wordpress, и зайдем в нее
-
-    ssh kube-1.home
-    scp -r root@gw.home:/home/bondit/setkubcluster/site .
-    cd site
-
-Скопировали деплойменты для wordpress и mysql и секрет с паролем от базы
-
-Не забываем изменить ***server: 192.168.1.10*** в деплойментах на тот ip где вы подняли nfs сервер
-
-vim kustomization.yaml [тут](site/kustomization.yaml)
-
-vim mysql-deployment.yaml [тут](site/mysql-deployment.yaml)
-
-vim wordpress-deployment.yaml [тут](site/wordpress-deployment.yaml)
-
-Ну и запускаем
-
-    kubectl apply -k ./
-
-Проверяем все
-
-    kubectl get secrets
-    kubectl get pv
-    kubectl get pvc
-    kubectl get pods
-    kubectl get svc
-    kubectl get pods -o wide
-    kubectl get pods --all-namespaces
-    kubectl get pod -A
-    kubectl describe node kube-1.home
-    kubectl describe node kube-2.home
-    kubectl describe node kube-3.home
-
-Удаляем весь деплой
-
-    kubectl delete -k ./
