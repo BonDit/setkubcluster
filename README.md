@@ -33,7 +33,7 @@
     cd kubespray
     git checkout tags/v2.18.0
     cp -rfp inventory/sample inventory/cluster
-    declare -a IPS=(192.168.1.80 192.168.1.85 192.168.1.82 192.168.1.86)
+    declare -a IPS=(192.168.1.80 192.168.1.85 192.168.1.86)
     CONFIG_FILE=inventory/cluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 
 Параметры смотрим [тут](kubespray/README.md).
